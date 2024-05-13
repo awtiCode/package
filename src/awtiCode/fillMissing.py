@@ -32,7 +32,7 @@ def fill_missing_data_normal_ratio(data):
 
     return data
 
-def fill_missing_data_inverse_distance(data, coord_data):
+def fill_missing_data_inverse_distance(data, coord_data, power = 2):
 
     filled_data = data.copy()
 
