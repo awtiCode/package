@@ -1,100 +1,32 @@
-# -*- coding: utf-8 -*-
-"""
-This module contains three functions for filling missing data:
-    - Arithmetic Mean method (functionname: AMM)
-    - Normal Ratio Method (functionname: NRM)
-    - Inverse distance method (functionname: IDM)
-For a working example, see Estimation of Missing Data.py
-@author: Israel
-"""
-
-import pandas as pd
-import numpy as np
-
-#1)Arithmetic Mean Method
-def AMM(dataframe):
+# Function to fill missing values using Arithmetic Mean
+def fill_missing_data_arithmetic(data):
     """
-    The provided dataframe should only have columns that you want filled. They will be filled on the average of the respective columns.
-
-    Parameters
-    ----------
-    dataframe : pandas dataframe
-        Dataframe with columns containing data (to use in filling) and missing data (to fill).
-
-    Returns
-    -------
-    DataFrame with all missing values filled.
-
+    Fills missing numerical values using the Arithmetic Mean method.
     """
-    fillvalues = dataframe.mean(axis=1)
-    colnames = dataframe.columns
-    filldict = {}
-    for colname in colnames:
-        filldict[colname] = fillvalues
-    dfFilled = dataframe.fillna(filldict)
-    return dfFilled
+    row_wise_means = data.mean(axis=1)
+    fill_dict = {column: row_wise_means for column in data.columns}
+    filled_data = data.fillna(fill_dict)
+    filled_data.element = data.element
+    return filled_data
 
 
-#2) Normal Ratio Method
-def NRM(dataframe):
+# Function to fill missing values using Normal Ratio method
+def fill_missing_data_normal_ratio(data):
     """
-    The provided dataframe should only have columns that you want filled. Missing data of each column will be filled based on the normal ratio of the other columns.
-
-    Parameters
-    ----------
-    dataframe : pandas dataframe
-        Dataframe with columns containing data (to use in filling) and missing data (to fill).
-
-    Returns
-    -------
-    DataFrame with all missing values filled.
-
+    Fill missing rainfall values in a DataFrame using the normal ratio.
     """
+    data = data.copy()
+    # Trying to fill all station by going through a data
+    for station_name in data.columns:
+        try:
+            Ni = data.resample(rule='Y').sum().mean()
+            Pi_Ni = data / Ni
+            Pi_Ni_Sum = Pi_Ni.drop(station_name, axis=1).sum(axis=1)
+            Na = Ni[station_name]
+            n = data.drop(station_name, axis=1).notna().sum(axis=1)
+            fill_data = (Na / n) * Pi_Ni_Sum
+            data[station_name] = data[station_name].fillna(fill_data)
+        except Exception as e:
+            print(f"Error for {station_name}: {e}")
 
-    #Normal ratio method requares the normal anual rain fall of each station (Ni) and 
-    #the mean annual rain fall of all stations(Nx)
-    Ni = dataframe.mean()
-    Nx = Ni.mean()
-
-    # code to calculate the normal ratio of each station    
-    filldict = {}
-    for column in dataframe.columns:
-        othercolumns = dataframe.iloc[:,dataframe.columns!=column]
-        NiOthers = Ni[Ni.index!=column]
-        filldict[column] = (Nx/len(NiOthers))*((othercolumns/NiOthers).sum(axis=1))
-
-    dfFilled = dataframe.fillna(filldict)
-    return dfFilled
-
-#3) Inverse distance method
-def IDM(fillColumns,distances):
-    """
-    Calculate inverse distance weighed values for a certain point, based on provided columns and corresponding distances to that point.
-
-    Parameters
-    ----------
-    fillColumns : Pandas DataFrames
-        The columns based on which the inverse distance weighted values are calculated.
-    distances : collection, array-like
-        The distances 
-
-    Returns
-    -------
-    fillData : Pandas Series
-        The calculated values based on Inverse Distance Weighted method.
-
-    """
-    if len(fillColumns.columns)!=len(distances):
-        print('THe number of provided columns is not equal to the number of provided distances. IDW cannot be calculated.')
-        return
-    
-    distances = np.array(distances)
-    invDist = 1/distances**2
-    sumID = np.sum(invDist)
-    
-    #To make shure that the correct distance is matched with the correct column,
-    # the array needs to be reshaped from (n,) to (1,n).
-    distSquared = (distances**2).reshape(1,len(distances))
-    
-    fillData = (fillColumns/distSquared).sum(axis=1)/sumID
-    return fillData
+    return data
