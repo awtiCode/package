@@ -1,3 +1,4 @@
+import numpy as np
 # Function to fill missing values using Arithmetic Mean
 def fill_missing_data_arithmetic(data):
     """
