@@ -150,3 +150,13 @@ def dataLoad(filepath,element,sheetno=None,stations_col=None,station_name=None,h
     print(f'Data loaded for element {element}, {year_info}, {station_info}.')
     
     return datanew
+
+def coordDataLoad(filepath):
+    '''
+    This function assumes you are loading a file with three columns, named 'station', 'latitude' and 'longitude'. 
+    It returns a dataframe that can be used for the inverse distance weighting function, as 'coord_data'.
+    '''
+    coord_data = pd.read_csv(filepath)
+    coord_data = coord_data.set_index('station')
+
+    return coord_data
