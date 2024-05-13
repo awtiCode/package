@@ -1,6 +1,5 @@
-__all__ = ['fillMissing','ftpChirps','mixedFileTypes','tempAnimation','optimization']
+__all__ = ['fillMissing','ftpChirps','loadData']
 
 from . import fillMissing
 from . import ftpChirps
-from . import mixedFileTypes
-from . import tempAnimation
+from . import loadData
