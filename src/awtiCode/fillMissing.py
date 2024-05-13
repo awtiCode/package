@@ -30,3 +30,23 @@ def fill_missing_data_normal_ratio(data):
             print(f"Error for {station_name}: {e}")
 
     return data
+
+def fill_missing_data_inverse_distance(data, coord_data):
+
+    filled_data = data.copy()
+
+    # Combine latitude and longitude into a DataFrame 'coordinates'
+    for missing_station in filled_data.columns:      
+        station_coords = coord_data.loc[missing_station, ['latitude', 'longitude']].values 
+        distances = np.sqrt((station_coords[0] - coord_data.loc[coord_data.index!=missing_station,'latitude'])**2 + (station_coords[1] - coord_data.loc[coord_data.index!=missing_station,'longitude'])**2)
+        weights = 1 / (distances ** power)
+        other_station_data = data.loc[:,data.columns!=missing_station]
+        weighted_station_data = other_station_data*weights
+        weightsdf = weighted_station_data.copy()
+        for col in weightsdf:
+            weightsdf.loc[:,col] = weights[col]
+        weightsdf[weighted_station_data.isna()] = np.nan
+        fill_with = weighted_station_data.sum(axis=1) / weightsdf.sum(axis=1)
+        filled_data.loc[:,missing_station] = data.loc[:,missing_station].fillna(fill_with)
+
+    return filled_data
