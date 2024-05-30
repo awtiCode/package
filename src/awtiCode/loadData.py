@@ -1,6 +1,6 @@
 import pandas as pd
 
-def dataLoad(filepath,element,sheetno=None,stations_col=None,station_name=None,headerrow=0):
+def dataLoad(filepath,element,sheetname=None,stations_col=None,station_name=None,headerrow=0):
     '''
     Load the data from common Ethiopian Meteorology Institute station file formats (csv or excel).
 
