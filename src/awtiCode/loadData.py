@@ -151,12 +151,18 @@ def dataLoad(filepath,element,sheetname=None,stations_col=None,station_name=None
     
     return datanew
 
-def coordDataLoad(filepath):
+def coordDataLoad(filepath,station_col = 'station', lat_col = 'latitude', lon_col = 'longitude'):
     '''
     This function assumes you are loading a file with three columns, named 'station', 'latitude' and 'longitude'. 
+    
+    You can simply supply filepath, and make sure that; your data have correctily spelled the 'station', 'latitude', and 'longitude'
+    
     It returns a dataframe that can be used for the inverse distance weighting function, as 'coord_data'.
     '''
-    coord_data = pd.read_csv(filepath)
-    coord_data = coord_data.set_index('station')
-
-    return coord_data
+    try:
+        coord_data = pd.read_csv(filepath)[[station_col,lat_col,lon_col]].set_axis(['station','latitude','longitude'],axis=1)
+        coord_data = coord_data.drop_duplicates(subset=['station']).set_index('station')
+        print(f"Coordinates loaded for {len(coord_data)} stations.")
+        return coord_data      
+    except Exception as e:
+        print(f"An error occurred: {e}")
