@@ -14,7 +14,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="awtiCode",  # Required
-    version="0.0.4",  # Required
+    version="0.0.5",  # Required
     description="Code developed by and for Arba Minch University Water Technology staff",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
