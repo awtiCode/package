@@ -10,8 +10,8 @@ def dataLoad(filepath,element,sheetname=None,stations_col=None,station_name=None
         Path to datafile.
     element : STR
         Name of element. If there are multiple elements in the data, specify which one to use by supplying that exact name.
-    sheetno : None or INT, optional
-        If the datafile is an excel file with multiple sheets, specify the sheet number (starting from 0). The default is None.
+    sheetname : None or INT or STR, optional
+        If the datafile is an excel file with multiple sheets, specify the sheet number (starting from 0) or name as STR. The default is None.
     stations_col : None or STR, optional
         If there is a column in the datafile that specifies the different stations, supply the name of that column. The default is None (no column with station names).
     station_name : None or STR, optional
@@ -30,7 +30,7 @@ def dataLoad(filepath,element,sheetname=None,stations_col=None,station_name=None
     
     # Load data
     if filepath.endswith('.xlsx'):    
-        data = pd.read_excel(filepath,sheetno,header=headerrow)
+        data = pd.read_excel(filepath,sheetname,header=headerrow)
     else:
         data = pd.read_csv(filepath,header=headerrow)
     
