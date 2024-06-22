@@ -38,4 +38,6 @@ or, more efficiently:
 from awtiCode.ftpChirps import ftpChirpsExplore
 ftpChirpsExplore()
 ```
+- Specifically if you'e interested in `fillMissing` [Click here and follow the instructions](src/README.md)
+
 The package awtiCode is very much under development - by developing code for this repository and package, we are also learning to code ourselves. Current code might contain errors, and not yet all code is properly explained with comments or docstrings. If you run into any errors, please raise an issue on this repository. If things are unclear, please let us know as well.
