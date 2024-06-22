@@ -31,6 +31,7 @@ from awtiCode.fillMissing import *
 #### **Step-3.1: Data loading as per your request**
 
 - Give the path first and here you are expected to load `PRECIP` from `emi22.csv` file, and you station column_name is `station`
+- Request the data .csv data from here [Demiso, Awel, Jdd, ](demo.nkmt1@gmail.com)
 
 ```
 file_path = 'emi22.csv'
