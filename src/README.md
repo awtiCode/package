@@ -55,13 +55,13 @@ coord = coordDataLoad(file_path)
 
 #### **Step-4.1:Fill using Arithemetic method**
 ```
-fill_missing_data_arithmetic(data)
+filled_arithmetic = fill_missing_data_arithmetic(data)
 ```
 #### **Step-4.2:Fill using Normal Ratio method**
 ```
-fill_missing_data_normal_ratio(data)
+filled_normal_ratio = fill_missing_data_normal_ratio(data)
 ```
 #### **Step-4.3:Fill using IDW method**
 ```
-fill_missing_data_inverse_distance(data, coord)
+filled_IDW = fill_missing_data_inverse_distance(data, coord)
 ```
